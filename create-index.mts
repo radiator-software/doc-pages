@@ -93,7 +93,7 @@ function generateHTML(directories: string[], generatedTime: string): string {
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <title>Documentation Index</title>
+                <title>Radiator 10 Documentation Versions</title>
                 <style>
                     body {
                         font-family:
