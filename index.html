@@ -1,164 +1,85 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Radiator 10 Documentation versions</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #f5f5f5;
-            }
-            .container {
-                background: white;
-                padding: 30px;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            h1 {
-                color: #333;
-                margin-bottom: 20px;
-            }
-            .directory-list {
-                list-style: none;
-                padding: 0;
-            }
-            .directory-item {
-                background: #f8f9fa;
-                margin: 10px 0;
-                padding: 15px;
-                border-radius: 5px;
-                border-left: 4px solid #007bff;
-                transition: background-color 0.2s;
-            }
-            .directory-item:hover {
-                background: #e9ecef;
-                cursor: pointer;
-            }
-            .directory-link {
-                text-decoration: none;
-                color: inherit;
-                display: block;
-            }
-            .directory-name {
-                font-weight: bold;
-                color: #007bff;
-            }
-            .meta-info {
-                margin-top: 20px;
-                padding: 15px;
-                background: #e9ecef;
-                border-radius: 5px;
-                font-size: 0.9em;
-                color: #666;
-            }
-            .loading {
-                text-align: center;
-                color: #666;
-            }
-            .error {
-                color: #dc3545;
-                background: #f8d7da;
-                padding: 15px;
-                border-radius: 5px;
-                border: 1px solid #f5c6cb;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>Radiator 10 Documentation versions</h1>
-            <div id="content">
-                <div class="loading">Loading...</div>
-            </div>
-        </div>
-
-        <script type="module">
-            // Function to parse semver from directory name (e.g., "v10.30.4" -> [10, 30, 4])
-            function parseSemver(dirName) {
-                const match = dirName.match(/^v(\d+)\.(\d+)\.(\d+)$/);
-                if (match) {
-                    return [
-                        parseInt(match[1]),
-                        parseInt(match[2]),
-                        parseInt(match[3]),
-                    ];
-                }
-                return null;
-            }
-
-            // Function to compare semver versions
-            function compareSemver(a, b) {
-                for (let i = 0; i < 3; i++) {
-                    if (a[i] !== b[i]) {
-                        return b[i] - a[i]; // Descending order (newest first)
+<!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <title>Documentation Index</title>
+                <style>
+                    body {
+                        font-family:
+                            -apple-system, BlinkMacSystemFont, "Segoe UI",
+                            Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 2rem;
+                        line-height: 1.6;
+                        color: #333;
                     }
-                }
-                return 0;
-            }
-
-            async function loadDirectories() {
-                const contentDiv = document.getElementById("content");
-
-                const response = await fetch("./index.json");
-                const data = await response.json();
-
-                // Separate and sort directories
-                const nonSemverDirs = [];
-                const semverDirs = [];
-
-                data.directories.forEach((directory) => {
-                    const semver = parseSemver(directory);
-                    if (semver) {
-                        semverDirs.push({ name: directory, version: semver });
-                    } else {
-                        nonSemverDirs.push(directory);
+                    h1 {
+                        color: #2c3e50;
+                        border-bottom: 2px solid #3498db;
+                        padding-bottom: 0.5rem;
                     }
-                });
+                    ul {
+                        list-style: none;
+                        padding: 0;
+                    }
+                    li {
+                        margin: 0.5rem 0;
+                        padding: 0.75rem;
+                        background: #f8f9fa;
+                        border-radius: 4px;
+                        border-left: 4px solid #3498db;
+                    }
+                    li:hover {
+                        background: #e9ecef;
+                        transform: translateX(4px);
+                        transition: all 0.2s ease;
+                    }
+                    a {
+                        text-decoration: none;
+                        color: #2c3e50;
+                        font-weight: 500;
+                    }
+                    a:hover {
+                        color: #3498db;
+                    }
+                    .meta {
+                        margin-top: 2rem;
+                        padding-top: 1rem;
+                        border-top: 1px solid #dee2e6;
+                        color: #6c757d;
+                        font-size: 0.9rem;
+                    }
+                    .count {
+                        color: #495057;
+                        font-weight: 500;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Documentation Index</h1>
+                <p class="count">
+                    Found 6
+                    directories:
+                </p>
 
-                // Sort non-semver directories alphabetically
-                nonSemverDirs.sort();
+                <ul>
+                     <li><a href="esamattirs_public-doc-site/">esamattirs_public-doc-site</a></li>
+ <li><a href="latest/">latest</a></li>
+ <li><a href="test/">test</a></li>
+ <li><a href="v10.10.4/">v10.10.4</a></li>
+ <li><a href="v10.100.4/">v10.100.4</a></li>
+ <li><a href="v10.4.4/">v10.4.4</a></li>
+                </ul>
 
-                // Sort semver directories by version (newest first)
-                semverDirs.sort((a, b) => compareSemver(a.version, b.version));
-
-                // Combine the sorted arrays (non-semver first, then semver)
-                const sortedDirectories = [
-                    ...semverDirs.map((item) => item.name),
-                    ...nonSemverDirs,
-                ];
-
-                // Generate directory list HTML using template strings
-                const directoryListHTML = sortedDirectories
-                    .map(
-                        (directory) => `
-                        <li class="directory-item">
-                            <a href="./${directory}/" class="directory-link">
-                                <div class="directory-name">${directory}</div>
-                            </a>
-                        </li>
-                    `,
-                    )
-                    .join("");
-
-                const generatedDate = new Date(data.generated).toLocaleString();
-
-                // Update content with template string
-                contentDiv.innerHTML = `
-                    <ul class="directory-list">
-                        ${directoryListHTML}
-                    </ul>
-                    <div class="meta-info">
-                        <strong>Generated:</strong> ${generatedDate}
-                    </div>
-                `;
-            }
-
-            // Load directories when page loads
-            loadDirectories();
-        </script>
-    </body>
-</html>
+                <div class="meta">
+                    <p>
+                        Generated on 9/29/2025, 6:56:05 PM
+                    </p>
+                </div>
+            </body>
+        </html>
