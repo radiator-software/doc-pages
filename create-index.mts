@@ -22,6 +22,35 @@ async function isDirectory(path: string): Promise<boolean> {
     }
 }
 
+function isSemver(dir: string): boolean {
+    return /^v\d+\.\d+\.\d+/.test(dir);
+}
+
+function parseSemver(dir: string): [number, number, number] | null {
+    const match = dir.match(/^v(\d+)\.(\d+)\.(\d+)/);
+    if (!match) return null;
+    return [
+        parseInt(match[1]!, 10),
+        parseInt(match[2]!, 10),
+        parseInt(match[3]!, 10),
+    ];
+}
+
+function compareSemver(a: string, b: string): number {
+    const aVer = parseSemver(a);
+    const bVer = parseSemver(b);
+
+    if (!aVer || !bVer) return 0;
+
+    // Compare major, minor, patch in order
+    for (let i = 0; i < 3; i++) {
+        if (aVer[i] !== bVer[i]) {
+            return bVer[i]! - aVer[i]!;
+        }
+    }
+    return 0;
+}
+
 async function readDirectories(basePath: string = "."): Promise<string[]> {
     const entries = await readdir(basePath);
     const directories: string[] = [];
@@ -37,8 +66,18 @@ async function readDirectories(basePath: string = "."): Promise<string[]> {
         }
     }
 
-    // Sort directories alphabetically
-    return directories.sort();
+    // Separate semver and non-semver directories
+    const semverDirs = directories.filter(isSemver);
+    const nonSemverDirs = directories.filter((dir) => !isSemver(dir));
+
+    // Sort non-semver directories alphabetically
+    nonSemverDirs.sort();
+
+    // Sort semver directories by version
+    semverDirs.sort(compareSemver);
+
+    // Return non-semver directories first, then semver directories
+    return [...nonSemverDirs, ...semverDirs];
 }
 
 function generateHTML(directories: string[], generatedTime: string): string {
