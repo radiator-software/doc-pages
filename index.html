@@ -77,14 +77,62 @@
         </div>
 
         <script type="module">
+            // Function to parse semver from directory name (e.g., "v10.30.4" -> [10, 30, 4])
+            function parseSemver(dirName) {
+                const match = dirName.match(/^v(\d+)\.(\d+)\.(\d+)$/);
+                if (match) {
+                    return [
+                        parseInt(match[1]),
+                        parseInt(match[2]),
+                        parseInt(match[3]),
+                    ];
+                }
+                return null;
+            }
+
+            // Function to compare semver versions
+            function compareSemver(a, b) {
+                for (let i = 0; i < 3; i++) {
+                    if (a[i] !== b[i]) {
+                        return b[i] - a[i]; // Descending order (newest first)
+                    }
+                }
+                return 0;
+            }
+
             async function loadDirectories() {
                 const contentDiv = document.getElementById("content");
 
                 const response = await fetch("./index.json");
                 const data = await response.json();
 
+                // Separate and sort directories
+                const nonSemverDirs = [];
+                const semverDirs = [];
+
+                data.directories.forEach((directory) => {
+                    const semver = parseSemver(directory);
+                    if (semver) {
+                        semverDirs.push({ name: directory, version: semver });
+                    } else {
+                        nonSemverDirs.push(directory);
+                    }
+                });
+
+                // Sort non-semver directories alphabetically
+                nonSemverDirs.sort();
+
+                // Sort semver directories by version (newest first)
+                semverDirs.sort((a, b) => compareSemver(a.version, b.version));
+
+                // Combine the sorted arrays (non-semver first, then semver)
+                const sortedDirectories = [
+                    ...semverDirs.map((item) => item.name),
+                    ...nonSemverDirs,
+                ];
+
                 // Generate directory list HTML using template strings
-                const directoryListHTML = data.directories
+                const directoryListHTML = sortedDirectories
                     .map(
                         (directory) => `
                         <li class="directory-item">
