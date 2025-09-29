@@ -148,11 +148,7 @@ function generateHTML(directories: string[], generatedTime: string): string {
                 </style>
             </head>
             <body>
-                <h1>Documentation Index</h1>
-                <p class="count">
-                    Found ${directories.length}
-                    ${directories.length === 1 ? "directory" : "directories"}:
-                </p>
+                <h1>Radiator 10 Documentation Versions</h1>
 
                 <ul>
                     ${directoryList}
