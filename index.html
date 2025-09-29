@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Documentation Directories</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            .container {
+                background: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                color: #333;
+                margin-bottom: 20px;
+            }
+            .directory-list {
+                list-style: none;
+                padding: 0;
+            }
+            .directory-item {
+                background: #f8f9fa;
+                margin: 10px 0;
+                padding: 15px;
+                border-radius: 5px;
+                border-left: 4px solid #007bff;
+                transition: background-color 0.2s;
+            }
+            .directory-item:hover {
+                background: #e9ecef;
+                cursor: pointer;
+            }
+            .directory-link {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+            }
+            .directory-name {
+                font-weight: bold;
+                color: #007bff;
+            }
+            .meta-info {
+                margin-top: 20px;
+                padding: 15px;
+                background: #e9ecef;
+                border-radius: 5px;
+                font-size: 0.9em;
+                color: #666;
+            }
+            .loading {
+                text-align: center;
+                color: #666;
+            }
+            .error {
+                color: #dc3545;
+                background: #f8d7da;
+                padding: 15px;
+                border-radius: 5px;
+                border: 1px solid #f5c6cb;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Radiator 10 Documentation versions</h1>
+            <div id="content">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+
+        <script type="module">
+            async function loadDirectories() {
+                const contentDiv = document.getElementById("content");
+
+                const response = await fetch("./index.json");
+                const data = await response.json();
+
+                // Generate directory list HTML using template strings
+                const directoryListHTML = data.directories
+                    .map(
+                        (directory) => `
+                        <li class="directory-item">
+                            <a href="./${directory}/" class="directory-link">
+                                <div class="directory-name">${directory}</div>
+                            </a>
+                        </li>
+                    `,
+                    )
+                    .join("");
+
+                const generatedDate = new Date(data.generated).toLocaleString();
+
+                // Update content with template string
+                contentDiv.innerHTML = `
+                    <ul class="directory-list">
+                        ${directoryListHTML}
+                    </ul>
+                    <div class="meta-info">
+                        <strong>Total directories:</strong> ${data.count}<br>
+                        <strong>Generated:</strong> ${generatedDate}
+                    </div>
+                `;
+            }
+
+            // Load directories when page loads
+            loadDirectories();
+        </script>
+    </body>
+</html>
