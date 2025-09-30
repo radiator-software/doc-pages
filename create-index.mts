@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { readdir, writeFile, stat } from "fs/promises";
 import { join } from "path";
 
@@ -96,6 +94,7 @@ function generateHTML(directories: string[], generatedTime: string): string {
                 <title>Radiator 10 Documentation Versions</title>
                 <style>
                     body {
+                        background: #131313;
                         font-family:
                             -apple-system, BlinkMacSystemFont, "Segoe UI",
                             Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -103,11 +102,11 @@ function generateHTML(directories: string[], generatedTime: string): string {
                         margin: 0 auto;
                         padding: 2rem;
                         line-height: 1.6;
-                        color: #333;
+                        color: #ffffff;
                     }
                     h1 {
-                        color: #2c3e50;
-                        border-bottom: 2px solid #3498db;
+                        color: #ffffff;
+                        border-bottom: 2px solid #30a77e;
                         padding-bottom: 0.5rem;
                     }
                     ul {
@@ -117,28 +116,28 @@ function generateHTML(directories: string[], generatedTime: string): string {
                     li {
                         margin: 0.5rem 0;
                         padding: 0.75rem;
-                        background: #f8f9fa;
+                        background: #242424;
                         border-radius: 4px;
-                        border-left: 4px solid #3498db;
+                        border-left: 4px solid #30a77e;
                     }
                     li:hover {
-                        background: #e9ecef;
+                        background: #242424;
                         transform: translateX(4px);
                         transition: all 0.2s ease;
                     }
                     a {
                         text-decoration: none;
-                        color: #2c3e50;
+                        color: #30a77e;
                         font-weight: 500;
                     }
                     a:hover {
-                        color: #3498db;
+                        color: #30a77e;
                     }
                     .meta {
                         margin-top: 2rem;
                         padding-top: 1rem;
-                        border-top: 1px solid #dee2e6;
-                        color: #6c757d;
+                        border-top: 1px solid #30a77e;
+                        color: #e1e1e1;
                         font-size: 0.9rem;
                     }
                     .count {
@@ -172,7 +171,9 @@ async function createIndex(): Promise<void> {
     const htmlContent = generateHTML(directories, generatedTime);
 
     await writeFile("index.html", htmlContent, "utf8");
-    console.log(`✅ Created index.html with ${directories.length} directories`);
+    console.log(
+        `:white_check_mark: Created index.html with ${directories.length} directories`,
+    );
 }
 
 // Run the script
