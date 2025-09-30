@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002Fdocs\u002Factions\u002F[slug]","\u002Fdocs\u002Farticles\u002F[slug]","\u002Fdocs\u002Fconfiguration\u002F[slug]","\u002Frelease-notes\u002F[version]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
