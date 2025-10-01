@@ -147,7 +147,7 @@ function generateHTML(directories: string[], generatedTime: string): string {
                 </style>
             </head>
             <body>
-                <h1>Radiator 10 Documentation Versions</h1>
+                <h1>Radiator 10 Documentation</h1>
 
                 <ul>
                     ${directoryList}
