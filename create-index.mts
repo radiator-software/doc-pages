@@ -144,7 +144,7 @@ async function readDirectories(basePath: string = "."): Promise<string[]> {
             continue;
         }
 
-        if (entry.contains("test")) {
+        if (entry.includes("test")) {
             continue;
         }
 
