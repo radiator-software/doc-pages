@@ -144,6 +144,10 @@ async function readDirectories(basePath: string = "."): Promise<string[]> {
             continue;
         }
 
+        if (entry.contains("test")) {
+            continue;
+        }
+
         if (await isDirectory(fullPath)) {
             directories.push(entry);
         }
